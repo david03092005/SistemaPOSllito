@@ -27,6 +27,9 @@ function Admin() {
                         <input type="radio" class="btn-check" name="role" id="vendedor" value="vendedor" required/>
                         <label class="btn btn-outline-secondary" for="vendedor">Vendedor</label>
                     </div>
+                    <div>
+                        <button>Crear Empleado</button>
+                    </div>
 
                 </div>
                 <div class="col">
