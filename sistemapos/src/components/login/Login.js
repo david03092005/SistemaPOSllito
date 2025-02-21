@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/authSlice";
+import { closeModal } from "../../redux/modalSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
-    const { mensaje, loading, error } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    
+    const { mensaje, loading, error, user} = useSelector((state) => state.auth);
     const [formData, setFormData] = useState({
         usuario: "",
         contrasena: "",
@@ -22,6 +26,15 @@ const Login = () => {
 
         dispatch(loginUser(data));
     };
+
+    useEffect(() => {
+        if (user) {
+            if (user.usuario.rol) {
+                dispatch(closeModal());
+                user.usuario.rol === "0" ? navigate("/admin") : navigate("/vendedor");
+            }
+        }
+    }, [user, navigate]);
 
     return (
         <>
@@ -57,9 +70,9 @@ const Login = () => {
                         {loading ? "Cargando..." : "Login"}
                     </button>
                 </div>
-            </form>
-            {mensaje && <p>{mensaje}</p>}
+            {mensaje && <p>{user ? user.message : null}</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
+            </form>
         </>
     );
 };

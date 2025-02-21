@@ -36,6 +36,7 @@ const authSlice = createSlice({
             state.user = null;
             state.mensaje = "Sesión cerrada";
             state.error = null;
+            state.loading = false;
         },
     },
     extraReducers: (builder) => {

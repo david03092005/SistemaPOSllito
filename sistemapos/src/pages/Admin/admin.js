@@ -1,55 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../redux/authSlice";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Admin() {
-  return (
-    <div>
-        <h1 class="text-right">Página de Administrador</h1>
-        <div class="container text-center">
-            <div class="row row-cols-3 g-5 grid text-center">
-                <div className="col">
-                    <div class="mb-3">
-                        <label for="cedula" class="form-label">Número de Cédula</label>
-                        <input type="number" id="cedula" class="form-control"  required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" id="nombre" class="form-control"  required/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contrasena" class="form-label">Contraseña</label>
-                        <input type="text" id="contrasena" class="form-control"  required/>
-                    </div>
-                    <div class="btn-group" role="group" name="comotuquieras">
-                        <input type="radio" class="btn-check" name="role" id="admin" value="admin" required/>
-                        <label class="btn btn-outline-primary" for="admin">Administrador</label>
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-                        <input type="radio" class="btn-check" name="role" id="vendedor" value="vendedor" required/>
-                        <label class="btn btn-outline-secondary" for="vendedor">Vendedor</label>
-                    </div>
-                    <div>
-                        <button>Crear Empleado</button>
-                    </div>
+    const { user } = useSelector((state) => state.auth);
 
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-outline-secondary btn-lg w-80">Secondary</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-outline-success btn-lg w-80">Success</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-outline-danger btn-lg w-80">Danger</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-outline-warning btn-lg w-80">Warning</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-outline-info btn-lg w-80">Info</button>
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    }
+
+    // Proteger la ruta del administrador
+    useEffect(() => {
+        if (!user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
+
+    return (
+        <div>
+            <h1 className="text-right">Página de Administrador</h1>
+            <div className="container text-center">
+                <div className="row row-cols-3 g-5 grid text-center">
+                    <div className="col">
+                        <button onClick={handleLogout} type="button" className="btn btn-outline-primary btn-lg w-80">LogOut</button>
+                    </div>
+                    <div className="col">
+                        <button type="button" className="btn btn-outline-secondary btn-lg w-80">Secondary</button>
+                    </div>
+                    <div className="col">
+                        <button type="button" className="btn btn-outline-success btn-lg w-80">Success</button>
+                    </div>
+                    <div className="col">
+                        <button type="button" className="btn btn-outline-danger btn-lg w-80">Danger</button>
+                    </div>
+                    <div className="col">
+                        <button type="button" className="btn btn-outline-warning btn-lg w-80">Warning</button>
+                    </div>
+                    <div className="col">
+                        <button type="button" className="btn btn-outline-info btn-lg w-80">Info</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 }
 

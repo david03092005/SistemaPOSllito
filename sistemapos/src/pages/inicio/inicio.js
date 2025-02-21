@@ -33,7 +33,7 @@ function Inicio() {
                   <div className="header-text mb-4 text-center">
                     <h2>¡WELCOME!</h2>
                     <p>Autentícate boludo</p>
-                    <Login/>
+                    {isOpen ? <Login/> : null}
                   </div>
                 </div>
               </div>

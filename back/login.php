@@ -20,12 +20,12 @@ $resultado = mysqli_query($conexion, $verificacion);
 if ($resultado->num_rows > 0) {
     $fila = $resultado->fetch_assoc();
     if ($contrasena == $fila['contrasena']) { // Verifica la contraseña
-        echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso"]);
+        echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso", "usuario" => $fila]);
     } else {
-        echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
+        echo json_encode(["success" => false, "message" => "Contraseña incorrecta", "usuario" => ""]);
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
+    echo json_encode(["success" => false, "message" => "Usuario no encontrado", "usuario" => ""]);
 }
 
 mysqli_close($conexion);
