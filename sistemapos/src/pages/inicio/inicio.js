@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { openModal, closeModal } from "../../redux/modalSlice";
-import  Login from "../../componets/login/Login";
+import  Login from "../../components/login/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./inicio.css";
 
@@ -14,10 +14,6 @@ function Inicio() {
   useEffect(() => {
     dispatch(closeModal());
   }, [navigate, dispatch]);
-
-  const handleLogin = () => {
-    dispatch(closeModal());
-  };
 
   return (
     <div className="text-center">
