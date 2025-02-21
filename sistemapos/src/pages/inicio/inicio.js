@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { openModal, closeModal } from "../../redux/modalSlice";
-import { setRole } from "../../redux/authSlice";
+import  Login from "../../componets/login/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./inicio.css";
 
@@ -10,20 +10,13 @@ function Inicio() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isOpen = useSelector((state) => state.modal.isOpen);
-  const role = useSelector((state) => state.auth.role);
-
+ 
   useEffect(() => {
     dispatch(closeModal());
   }, [navigate, dispatch]);
 
   const handleLogin = () => {
     dispatch(closeModal());
-
-    if (role === "admin") {
-      navigate("/admin");
-    } else if (role === "vendedor") {
-      navigate("/vendedor");
-    }
   };
 
   return (
@@ -44,32 +37,8 @@ function Inicio() {
                   <div className="header-text mb-4 text-center">
                     <h2>¡WELCOME!</h2>
                     <p>Autentícate boludo</p>
+                    <Login/>
                   </div>
-
-                  {/* Selección de rol con Redux */}
-                  <div className="input-group mb-3">
-                    <select 
-                      className="form-select form-select-lg bg-light fs-6"
-                      value={role} 
-                      onChange={(e) => dispatch(setRole(e.target.value))}
-                    >
-                      <option value="admin">Administrador</option>
-                      <option value="vendedor">Vendedor</option>
-                    </select>
-                  </div>
-                  <form action="../back/login.php" method="POST">
-                  <div className="input-group mb-3">
-                    <input name="usuario" type="text" className="form-control form-control-lg bg-light fs-6" placeholder="Usuario" />
-                  </div>
-                  <div className="input-group mb-3">
-                    <input name="contrasena" type="password" className="form-control form-control-lg bg-light fs-6" placeholder="Contraseña" />
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <button className="btn btn-lg btn-primary w-100 fs-6" onClick={handleLogin}>
-                      Login
-                    </button>
-                  </div>
-                  </form>
                 </div>
               </div>
             </div>
