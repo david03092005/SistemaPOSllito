@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/authSlice";
-import { closeModal } from "../../redux/modalSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const Login = () => {
     useEffect(() => {
         if (user) {
             if (user.usuario.rol) {
-                dispatch(closeModal());
                 user.usuario.rol === "0" ? navigate("/admin") : navigate("/vendedor");
             }
         }

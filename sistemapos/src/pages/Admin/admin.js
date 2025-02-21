@@ -15,10 +15,9 @@ function Admin() {
         navigate('/');
     }
 
-    // Proteger la ruta del administrador
     useEffect(() => {
         if (!user) {
-            navigate("/");
+            // navigate("/");
         }
     }, [user, navigate]);
 
