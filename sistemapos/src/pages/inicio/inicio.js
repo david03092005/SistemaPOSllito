@@ -57,18 +57,19 @@ function Inicio() {
                       <option value="vendedor">Vendedor</option>
                     </select>
                   </div>
-
+                  <form action="../back/login.php" method="POST">
                   <div className="input-group mb-3">
-                    <input type="text" className="form-control form-control-lg bg-light fs-6" placeholder="Email address" />
+                    <input name="usuario" type="text" className="form-control form-control-lg bg-light fs-6" placeholder="Usuario" />
                   </div>
                   <div className="input-group mb-3">
-                    <input type="password" className="form-control form-control-lg bg-light fs-6" placeholder="Password" />
+                    <input name="contrasena" type="password" className="form-control form-control-lg bg-light fs-6" placeholder="Contraseña" />
                   </div>
                   <div className="d-flex justify-content-between">
                     <button className="btn btn-lg btn-primary w-100 fs-6" onClick={handleLogin}>
                       Login
                     </button>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>
