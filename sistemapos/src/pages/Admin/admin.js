@@ -20,10 +20,6 @@ function Admin() {
                         <label for="contrasena" class="form-label">Contraseña</label>
                         <input type="text" id="contrasena" class="form-control"  required/>
                     </div>
-                    <div class="mb-3">
-                        <label for="contrasena" class="form-label">Contraseña</label>
-                        <input type="text" id="contrasena" class="form-control"  required/>
-                    </div>
                     <div class="btn-group" role="group" name="comotuquieras">
                         <input type="radio" class="btn-check" name="role" id="admin" value="admin" required/>
                         <label class="btn btn-outline-primary" for="admin">Administrador</label>
