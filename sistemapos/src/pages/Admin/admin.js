@@ -1,19 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../redux/authSlice";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "../../components/navbar/Navbar"
 
 function Admin() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { user } = useSelector((state) => state.auth);
-
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate('/');
-    }
 
     useEffect(() => {
         if (!user) {
@@ -23,26 +17,23 @@ function Admin() {
 
     return (
         <div>
-            <h1 className="text-right">Página de Administrador</h1>
-            <div className="container text-center">
-                <div className="row row-cols-3 g-5 grid text-center">
-                    <div className="col">
-                        <button onClick={handleLogout} type="button" className="btn btn-outline-primary btn-lg w-80">LogOut</button>
-                    </div>
-                    <div className="col">
-                        <button type="button" className="btn btn-outline-secondary btn-lg w-80">Secondary</button>
-                    </div>
-                    <div className="col">
-                        <button type="button" className="btn btn-outline-success btn-lg w-80">Success</button>
-                    </div>
-                    <div className="col">
-                        <button type="button" className="btn btn-outline-danger btn-lg w-80">Danger</button>
-                    </div>
-                    <div className="col">
-                        <button type="button" className="btn btn-outline-warning btn-lg w-80">Warning</button>
-                    </div>
-                    <div className="col">
-                        <button type="button" className="btn btn-outline-info btn-lg w-80">Info</button>
+            <Navbar/>
+            <div className="d-flex flex-column align-items-center vh-100">
+                <h1 className="text-right text-center mt-5 mb-5">Administrador</h1>
+                <div className="container text-center">
+                    <div className="row row-cols-3 g-5 grid text-center">
+                        <div className="col">
+                            <button onClick={() => navigate("/EmpleadosAdmin")} type="button" className="btn btn-outline-primary btn-lg w-80">Empleados</button>
+                        </div>
+                        <div className="col">
+                            <button onClick={() => navigate("/ClientesAdmin")} type="button" className="btn btn-outline-secondary btn-lg w-80">Clientes</button>
+                        </div>
+                        <div className="col">
+                            <button onClick={() => navigate("/ProveedoresAdmin")} type="button" className="btn btn-outline-success btn-lg w-80">Proveedores</button>
+                        </div>
+                        <div className="col">
+                            <button onClick={() => navigate("/ProductosAdmin")} type="button" className="btn btn-outline-danger btn-lg w-80">Productos</button>
+                        </div>
                     </div>
                 </div>
             </div>
