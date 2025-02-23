@@ -6,15 +6,15 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$consulta = "SELECT * FROM usuario";
-$usuarios = mysqli_query($conexion, $consulta);
+$consulta = "SELECT * FROM producto";
+$productos = mysqli_query($conexion, $consulta);
 
-if ($usuarios->num_rows > 0) {
-    while ($usuario = $usuarios->fetch_assoc()) {
-        $data[] = $usuario;
+if ($productos->num_rows > 0) {
+    while ($producto = $productos->fetch_assoc()) {
+        $data[] = $producto;
     }
 } else {
-    $data = ["success" => false, "message" => "No hay usuarios registrados"];
+    $data = ["success" => false, "message" => "No hay productos registrados."];
 }
 
 echo json_encode($data);

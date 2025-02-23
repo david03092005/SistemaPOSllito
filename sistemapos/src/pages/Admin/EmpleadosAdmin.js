@@ -138,7 +138,8 @@ function EmpleadosAdmin() {
                                 </tr>
                             </thead>
                                     <tbody>
-                                        {employees.map(empleado => (
+                                        {employees.message ? null :
+                                            employees.map(empleado => (
                                             <tr key={empleado.ID_usuario}>
                                                 <th scope="row">{empleado.ID_usuario}</th>
                                                 <td>{empleado.nombre_usuario}</td>
@@ -148,6 +149,8 @@ function EmpleadosAdmin() {
                                         ))}
                                     </tbody>
                             </table>
+                            {message && <p>{message}</p>}
+                            {error && <p style={{ color: "red" }}>{error}</p>}
                             <form onSubmit={handleSubmit}>
                                 <button className="btn btn-primary">Actualizar</button>
                             </form> 

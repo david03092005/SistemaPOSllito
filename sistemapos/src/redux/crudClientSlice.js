@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Acción asíncrona para eliminar un empleado
+// Acción asíncrona para eliminar un cliente
 export const deleteConnection = createAsyncThunk(
-    "employee/delete", // Tipo de acción para Redux
+    "client/delete",
     async (formData, { rejectWithValue }) => {
         try {
-            const response = await fetch("http://localhost/back/deleteEmployee.php", {
+            const response = await fetch("http://localhost/back/deleteClient.php", {
                 method: "POST",
                 body: formData,
             });
@@ -14,19 +14,19 @@ export const deleteConnection = createAsyncThunk(
                 throw new Error("Error en la solicitud");
             }
 
-            const data = await response.json(); // Convertir la respuesta a JSON
-            return data; // Retornar la respuesta del servidor
+            const data = await response.json();
+            return data;
         } catch (error) {
-            return rejectWithValue(error.message); // Manejar errores
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const updateConnection = createAsyncThunk(
-    "employee/update", // Tipo de acción para Redux
+    "client/update",
     async (formData, { rejectWithValue }) => {
         try {
-            const response = await fetch("http://localhost/back/updateEmployee.php", {
+            const response = await fetch("http://localhost/back/updateClient.php", {
                 method: "POST",
                 body: formData
             });
@@ -35,19 +35,19 @@ export const updateConnection = createAsyncThunk(
                 throw new Error("Error en la solicitud");
             }
 
-            const data = await response.json(); // Convertir la respuesta a JSON
-            return data; // Retornar la respuesta del servidor
+            const data = await response.json();
+            return data;
         } catch (error) {
-            return rejectWithValue(error.message); // Manejar errores
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const readConnection = createAsyncThunk(
-    "employee/read", // Tipo de acción para Redux
+    "client/read",
     async (formData, { rejectWithValue }) => {
         try {
-            const response = await fetch("http://localhost/back/readEmployee.php", {
+            const response = await fetch("http://localhost/back/readClient.php", {
                 method: "POST",
                 body: formData
             });
@@ -56,33 +56,32 @@ export const readConnection = createAsyncThunk(
                 throw new Error("Error en la solicitud");
             }
 
-            const data = await response.json(); // Convertir la respuesta a JSON
-            return data; // Retornar la respuesta del servidor
+            const data = await response.json();
+            return data;
         } catch (error) {
-            return rejectWithValue(error.message); // Manejar errores
+            return rejectWithValue(error.message);
         }
     }
 );
 
-const employeeSlice = createSlice({
-    name: "employee",
+const clientSlice = createSlice({
+    name: "client",
     initialState: {
         loading: false,
         success: false,
         error: null,
         message: "",
-        usuario: null,
-        employees: []
+        cliente: null,
+        clients: []
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Manejo de eliminar empleado
             .addCase(deleteConnection.pending, (state) => {
                 state.loading = true;
                 state.success = false;
                 state.error = null;
-                state.message = "";
+                state.message = null;
             })
             .addCase(deleteConnection.fulfilled, (state, action) => {
                 state.loading = false;
@@ -92,48 +91,45 @@ const employeeSlice = createSlice({
             .addCase(deleteConnection.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                state.error = action.payload || "Error al eliminar el usuario.";
+                state.error = action.payload || "Error al eliminar el cliente.";
             })
 
-            // Manejo de actualizar empleado
             .addCase(updateConnection.pending, (state) => {
                 state.loading = true;
                 state.success = false;
                 state.error = null;
-                state.message = "";
+                state.message = null;
             })
             .addCase(updateConnection.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
                 state.message = action.payload.message;
-                state.usuario = action.payload.user;
+                state.cliente = action.payload.client;
             })
             .addCase(updateConnection.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                state.error = action.payload || "Error al actualizar el usuario.";
+                state.error = action.payload || "Error al actualizar el cliente.";
             })
 
-            // Manejo de leer empleados
             .addCase(readConnection.pending, (state) => {
                 state.loading = true;
                 state.success = false;
                 state.error = null;
-                state.message = "";
+                state.message = null;
             })
             .addCase(readConnection.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
-                state.employees = action.payload;
+                state.clients = action.payload;
                 state.message = action.payload.message;
             })
             .addCase(readConnection.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                state.error = action.payload || "Error al leer los empleados.";
-            })
+                state.error = action.payload || "Error al leer los clientes.";
+            });
     },
 });
 
-export default employeeSlice.reducer;
-
+export default clientSlice.reducer;
