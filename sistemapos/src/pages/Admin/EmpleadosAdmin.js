@@ -9,6 +9,7 @@ function EmpleadosAdmin() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const cedulaAdmin = useSelector((state) => state.auth.cedulaAdmin);
     const { user } = useSelector((state) => state.auth);
     const { message, error, usuario, employees } = useSelector((state) => state.employee);
 
@@ -58,11 +59,12 @@ function EmpleadosAdmin() {
         }
         else if (formData.accion === "registrar") {
             console.log("HOLAAAAAAAAAAA");
+            console.log("Cedula Admin en EmpleadosAdmin.js:", cedulaAdmin);
             data.append("nombre", formData.nombre);
             data.append("cedula", formData.cedula);
             data.append("contrasena", formData.contrasena);
             data.append("rol", formData.rol);
-            // data.append("cedula_admin", user.cedula); // Asociar con el administrador en sesión
+            data.append("cedulaAdmin", cedulaAdmin); // Asociar con el administrador en sesión
             dispatch(createEmployee(data));
         }
         

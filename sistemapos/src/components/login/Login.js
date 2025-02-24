@@ -22,12 +22,14 @@ const Login = () => {
         const data = new FormData();
         data.append("usuario", formData.usuario);
         data.append("contrasena", formData.contrasena);
-
+        console.log("HOLAAA DESDE EL LOGIN");
         dispatch(loginUser(data));
+        
     };
 
     useEffect(() => {
         if (user) {
+            console.log("Cedula Admin desde login:", user.cedula);
             if (user.usuario.rol) {
                 user.usuario.rol === "0" ? navigate("/admin") : navigate("/vendedor");
             }

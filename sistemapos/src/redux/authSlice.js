@@ -30,6 +30,7 @@ const authSlice = createSlice({
         mensaje: "",
         loading: false,
         error: null,
+        cedulaAdmin: null, // Nueva propiedad para guardar la cédula del administrador
     },
     reducers: {
         logout: (state) => {
@@ -37,6 +38,8 @@ const authSlice = createSlice({
             state.mensaje = "Sesión cerrada";
             state.error = null;
             state.loading = false;
+            state.cedulaAdmin = null; // Limpiar la cédula al cerrar sesión
+    
         },
     },
     extraReducers: (builder) => {
@@ -50,6 +53,11 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.user = action.payload; // Guardar el usuario
                 state.mensaje = action.payload.message;
+                
+                // Si el usuario es administrador, guarda su cédula
+                if (action.payload.usuario.rol === "0") { // 0 es administrador
+                    state.cedulaAdmin = action.payload.cedula;
+                }
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

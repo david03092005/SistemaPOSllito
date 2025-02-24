@@ -20,7 +20,17 @@ $resultado = mysqli_query($conexion, $verificacion);
 if ($resultado->num_rows > 0) {
     $fila = $resultado->fetch_assoc();
     if ($contrasena == $fila['contrasena']) { // Verifica la contraseña
-        echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso", "usuario" => $fila]);
+         // Si el rol es administrador, obtener la cédula del administrador
+         if ($fila['rol'] == "0") {
+            $consultaCedula = "SELECT cedula_administrador FROM administrador WHERE ID_usuario = " . $fila['ID_usuario'];
+            $resultadoCedula = mysqli_query($conexion, $consultaCedula);
+            if ($resultadoCedula->num_rows > 0) {
+                $cedulaAdmin = $resultadoCedula->fetch_assoc();
+                $cedula = $cedulaAdmin['cedula_administrador'];
+            }
+        }
+
+        echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso", "usuario" => $fila, "cedula" => $cedula]);
     } else {
         echo json_encode(["success" => false, "message" => "Contraseña incorrecta", "usuario" => ""]);
     }

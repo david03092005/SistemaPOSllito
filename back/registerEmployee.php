@@ -13,7 +13,7 @@ $nombre = $_POST['nombre'];
 $cedula = $_POST['cedula'];
 $rol = intval($_POST['rol']);
 $contrasena = $_POST['contrasena'];
-// $cedulaAdmin = $_POST['cedulaAdmin'];
+$cedulaAdmin = $_POST['cedulaAdmin'];
 
 
 // Validación de datos
@@ -63,13 +63,13 @@ if ($conexion->query($queryUsuario) === TRUE) {
                        VALUES ('$cedula', '$idUsuario', '$nombre')";
         $resultadoAdmin = mysqli_query($conexion, $queryAdmin);
     } 
-    // elseif ($rol == 1) { // Vendedor
+    elseif ($rol == 1) { // Vendedor
         
-    //     $cedulaAdmin = $cedulaAdmin ? $cedulaAdmin : 'NULL';
-    //     $queryVendedor = "INSERT INTO vendedor (cedula_vendedor, ID_usuario, nombre_vendedor, cedula_administrador) 
-    //               VALUES ('$cedula', '$idUsuario', '$nombre', '$cedulaAdmin')";
-    //     $resultadoVendedor = mysqli_query($conexion, $queryVendedor);
-    // }
+        $cedulaAdmin = $cedulaAdmin ? $cedulaAdmin : 'NULL';
+        $queryVendedor = "INSERT INTO vendedor (cedula_vendedor, ID_usuario, nombre_vendedor, cedula_administrador) 
+                  VALUES ('$cedula', '$idUsuario', '$nombre', '$cedulaAdmin')";
+        $resultadoVendedor = mysqli_query($conexion, $queryVendedor);
+    }
     
 
     // Respuesta exitosa
