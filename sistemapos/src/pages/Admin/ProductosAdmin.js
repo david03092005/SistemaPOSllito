@@ -11,6 +11,27 @@ function ProductosAdmin() {
 
     const { user } = useSelector((state) => state.auth);
     const { message, error, producto, products } = useSelector((state) => state.product);
+    //
+    const [productos, setProductos] = useState([]);
+
+    useEffect(() => {
+            fetch("/back/readSupplier.php") // Llamar al backend
+                .then(response => response.json()) // Convertir respuesta a JSON
+                .then(data => setProveedores(data))
+                .catch(error => console.error("Error cargando datos:", error));
+        }, []);
+
+
+    const [proveedores, setProveedores] = useState([]);
+    //seleccionar proveedor para crearProducto
+    //const [selectedProveedorId, setSelectedProveedorId] = useState("");
+    //Crear
+    const [newProveedor, setNewProveedor] = useState("");
+    const [newProductoNombre, setNewProductoNombre] = useState("");
+    const [newCantidadProducto, setNewCantidadProducto] = useState("");
+    const [newPrecioProducto, setNewPrecioProducto] = useState("");
+    const [newNombreProveedor, setNewNombreProveedor] = useState("");
+    const [newProveedorId, setNewProveedorId] = useState("");
 
     const [formData, setFormData] = useState({
         accion: "",
@@ -29,6 +50,18 @@ function ProductosAdmin() {
         setFormData({ ...formData, accion: event.target.name });
         console.log(formData);
     };
+
+    const handleProveedor = (proveedor) => {
+        setNewProveedor(proveedor);
+        setNewProveedorId(proveedor.ID_proveedor);
+        setNewNombreProveedor(proveedor.nombre_proveedor); // Cargar el nombre del proveedor 
+    };
+
+    const handleNoProveedor = () => {
+        setNewProveedor(null);
+        setNewProveedorId(null);
+        setNewNombreProveedor("");
+    }; 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -53,12 +86,6 @@ function ProductosAdmin() {
         else if (formData.accion === "buscar") {
             dispatch(readConnection(data));
         }
-        else if (formData.accion === "registrar") {
-            data.append("nombre_producto", formData.nombre_producto);
-            data.append("cantidad", formData.cantidad);
-            data.append("ID_proveedor", formData.ID_proveedor);
-            dispatch(createConnection(data));
-        }
 
         console.log(formData);
     };
@@ -66,7 +93,7 @@ function ProductosAdmin() {
     useEffect(() => {
         console.log(formData.ID_producto);
         if (!user) {
-            // navigate("/");
+            navigate("/");
         }
         if (producto) {
             setFormData((prevState) => ({
@@ -79,6 +106,58 @@ function ProductosAdmin() {
             }));
         }
     }, [user, navigate, producto]);
+
+
+    const handleCreateProducto = () => {
+        if (!newProductoNombre || !newCantidadProducto || !newPrecioProducto || !newProveedor) {
+            alert("Por favor, ingrese todos los datos.");
+            return;
+        }
+    
+        // Datos a enviar al backend
+        const data = {
+            nombre: newProductoNombre,
+            cantidad: newCantidadProducto,
+            precio: newPrecioProducto,
+            idProveedor: newProveedor.ID_proveedor
+        };
+    
+        // Enviar la solicitud al backend
+        fetch("/back/createProduct.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Agregar el nuevo proveedor a la lista
+                    const newProducto = {
+                        ID_producto: result.id, // El ID generado por el backend
+                        nombre_proveedor: newProductoNombre,
+                        cantidad: newCantidadProducto,
+                        precio: newPrecioProducto,
+                        ID_proveedor: newProveedor.ID_proveedor,
+                    };
+                    setProductos([...productos, newProducto]); // Actualizar la lista de productos
+                    setNewProductoNombre("");
+                    setNewCantidadProducto("");
+                    setNewPrecioProducto("");
+                    setNewProveedor(null);
+                    alert("Producto registrado exitosamente.");
+                } else {
+                    console.error("Error al registrar el producto:", result.message);
+                    alert("Error al registrar el producto.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error al conectar con el servidor.");
+            });
+    };
+
 
     return (
         <>
@@ -111,16 +190,61 @@ function ProductosAdmin() {
                     <div className="tab-pane fade show active" id="registrar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Registrar Producto</h3>
                         <form onSubmit={handleSubmit}>
-                            <input onChange={handleChange} name="nombre_producto" type="text" className="form-control mb-3" placeholder="Nombre del Producto" />
-                            <input onChange={handleChange} name="cantidad" type="number" className="form-control mb-3 mt-3" placeholder="Cantidad" required />
-                            <input onChange={handleChange} name="ID_provedor" type="text" className="form-control mb-3 mt-3" placeholder="ID Proveedor" required />
+                        <input
+                                        type="text"
+                                        className="form-control mb-3"
+                                        placeholder="Nombre del Producto"
+                                        value={newProductoNombre}
+                                        onChange={(e) => setNewProductoNombre(e.target.value)}
+                                    />
+                        <input
+                                        type="number"
+                                        className="form-control mb-3"
+                                        placeholder="Cantidad"
+                                        value={newCantidadProducto}
+                                        onChange={(e) => setNewCantidadProducto(e.target.value)}
+                                    />
+                        <input
+                                        type="number"
+                                        className="form-control mb-3"
+                                        placeholder="Precio"
+                                        value={newPrecioProducto}
+                                        onChange={(e) => setNewPrecioProducto(e.target.value)}
+                                    />
+
+                            <select
+                                className="form-select"
+                                aria-label="Seleccionar proveedor"
+                                value={newProveedorId}
+                                onChange={(e) => {
+                                    const selectedId = e.target.value;
+                                    const proveedor = proveedores.find(p => p.ID_proveedor.toString() === selectedId);
+                                    if (proveedor) {
+                                        handleProveedor(proveedor);
+                                    }else {
+                                        handleNoProveedor(); // Limpiar el estado si no se encuentra el proveedor
+                                    }  
+                                }}
+                            >
+                                <option value="">Seleccione un proveedor</option>
+                                {proveedores.map(proveedor => (
+                                    <option key={proveedor.ID_proveedor} value={proveedor.ID_proveedor}>
+                                        {proveedor.nombre_proveedor} (ID: {proveedor.ID_proveedor})
+                                    </option>
+                                    
+                                ))}
+                            </select>
+
+
                             <button 
                                 className="btn btn-primary w-100" 
                                 name="registrar" 
                                 onClick={(event) => {
                                     handleC(event); 
                                     setTimeout(() => handleSubmit(event), 0);
+                                    handleCreateProducto();
                                 }}
+                                disabled={!newProveedorId || !newCantidadProducto || !newPrecioProducto || !newProductoNombre}
                             >
                                 Guardar
                             </button>
@@ -136,6 +260,7 @@ function ProductosAdmin() {
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Cantidad</th>
                                     <th scope="col">ID Proveedor</th>
+                                    <th scope="col">Precio</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,6 +271,7 @@ function ProductosAdmin() {
                                             <td>{producto.nombre_producto}</td>
                                             <td>{producto.cantidad}</td>
                                             <td>{producto.ID_proveedor}</td>
+                                            <td>{producto.precio}</td>
                                         </tr>
                                     ))}
                             </tbody>

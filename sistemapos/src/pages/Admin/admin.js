@@ -11,7 +11,7 @@ function Admin() {
 
     useEffect(() => {
         if (!user) {
-            // navigate("/");
+            navigate("/");
         }
     }, [user, navigate]);
 

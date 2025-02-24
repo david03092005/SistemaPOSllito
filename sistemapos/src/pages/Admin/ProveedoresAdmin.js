@@ -11,7 +11,7 @@ function ProveedoresAdmin() {
 
     useEffect(() => {
         if (!user) {
-            // navigate("/");
+            navigate("/");
         }
     }, [user, navigate]);
 
@@ -278,7 +278,8 @@ function ProveedoresAdmin() {
                                 const proveedor = proveedores.find(p => p.ID_proveedor.toString() === selectedId);
                                 if (proveedor) {
                                     handleOpenEdit(proveedor);
-                                } else {
+                                } 
+                                else {
                                     handleCloseEdit(); // Limpiar el estado si no se encuentra el proveedor
                                 }  
                             }}

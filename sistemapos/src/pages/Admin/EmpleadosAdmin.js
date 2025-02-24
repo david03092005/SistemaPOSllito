@@ -74,7 +74,7 @@ function EmpleadosAdmin() {
     useEffect(() => {
         console.log(formData.ID_usuario); 
         if (!user) {
-            // navigate("/");
+            navigate("/");
         }
         if (usuario) {
             setFormData((prevState) => ({

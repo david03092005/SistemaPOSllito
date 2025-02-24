@@ -58,7 +58,7 @@ function ClientesAdmin() {
 
     useEffect(() => {
         if (!user) {
-            // navigate("/");
+            navigate("/");
         }
         if (cliente) {
             setFormData((prevState) => ({
