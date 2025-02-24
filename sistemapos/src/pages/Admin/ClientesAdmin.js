@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../../components/navbar/Navbar";
-import { deleteConnection, updateConnection, readConnection } from "../../redux/crudClientSlice";
+import { createConnection, deleteConnection, updateConnection, readConnection } from "../../redux/crudClientSlice";
 
 function ClientesAdmin() {
     const navigate = useNavigate();
@@ -33,19 +33,26 @@ function ClientesAdmin() {
         if (formData.accion === "eliminar") {
             data.append("cedula_cliente", formData.cedula_cliente);
             dispatch(deleteConnection(data));
-        } else if (formData.accion === "actualizar") {
+        } 
+        else if (formData.accion === "actualizar") {
             data.append("accion", "actualizar");
             data.append("cedula_cliente", formData.cedula_cliente);
             data.append("nombre_cliente", formData.nombre_cliente);
             dispatch(updateConnection(data));
-        } else if (formData.accion === "consultar") {
+        } 
+        else if (formData.accion === "consultar") {
             data.append("cedula_cliente", formData.cedula_cliente);
             data.append("accion", "consultar");
             dispatch(updateConnection(data));
-        } else if (formData.accion === "buscar") {
+        } 
+        else if (formData.accion === "buscar") {
             dispatch(readConnection(data));
         }
-
+        else if (formData.accion === "registrar") {
+            data.append("nombre_cliente", formData.nombre_cliente);
+            data.append("cedula_cliente", formData.cedula_cliente);
+            dispatch(createConnection(data));
+        }
         console.log(formData);
     };
 
@@ -66,7 +73,6 @@ function ClientesAdmin() {
         <>
             <Navbar />
             <div className="container mt-5">
-
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
                         <button onClick={handleC} name="registrar" className="nav-link active" data-bs-toggle="tab" data-bs-target="#registrar" type="button" role="tab">
@@ -93,10 +99,19 @@ function ClientesAdmin() {
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="registrar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Registrar Cliente</h3>
-                        <form>
-                            <input type="text" className="form-control mb-3" placeholder="Nombre del Cliente" />
-                            <input type="number" className="form-control mb-3 mt-3" placeholder="Cédula del Cliente" required />
-                            <button className="btn btn-primary w-100">Guardar</button>
+                        <form onSubmit={handleSubmit}>
+                            <input onChange={handleChange} name="nombre_cliente" type="text" className="form-control mb-3" placeholder="Nombre del Cliente" />
+                            <input onChange={handleChange} name="cedula_cliente" type="number" className="form-control mb-3 mt-3" placeholder="Cédula del Cliente" required />
+                            <button 
+                                className="btn btn-primary w-100" 
+                                name="registrar" 
+                                onClick={(event) => {
+                                    handleC(event); 
+                                    setTimeout(() => handleSubmit(event), 0);
+                                }}
+                            >
+                                Guardar
+                            </button>
                         </form>
                     </div>
 

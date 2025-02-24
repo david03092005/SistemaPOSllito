@@ -110,7 +110,6 @@ const employeeSlice = createSlice({
                 state.loading = false;
                 state.success = true;
                 state.message = action.payload.message;
-                state.employee = action.payload.employee;
             })
             .addCase(createEmployee.rejected, (state, action) => {
                 state.loading = false;

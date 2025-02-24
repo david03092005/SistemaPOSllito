@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../../components/navbar/Navbar";
-import { deleteConnection, updateConnection, readConnection } from "../../redux/crudProductSlice";
+import { createConnection, deleteConnection, updateConnection, readConnection } from "../../redux/crudProductSlice";
 
 function ProductosAdmin() {
     const navigate = useNavigate();
@@ -44,12 +44,20 @@ function ProductosAdmin() {
             data.append("ID_proveedor", formData.ID_proveedor);
             data.append("precio", formData.precio);
             dispatch(updateConnection(data));
-        } else if (formData.accion === "consultar") {
+        } 
+        else if (formData.accion === "consultar") {
             data.append("ID_producto", formData.ID_producto);
             data.append("accion", "consultar");
             dispatch(updateConnection(data));
-        } else if (formData.accion === "buscar") {
+        } 
+        else if (formData.accion === "buscar") {
             dispatch(readConnection(data));
+        }
+        else if (formData.accion === "registrar") {
+            data.append("nombre_producto", formData.nombre_producto);
+            data.append("cantidad", formData.cantidad);
+            data.append("ID_proveedor", formData.ID_proveedor);
+            dispatch(createConnection(data));
         }
 
         console.log(formData);
@@ -102,11 +110,20 @@ function ProductosAdmin() {
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="registrar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Registrar Producto</h3>
-                        <form>
-                            <input type="text" className="form-control mb-3" placeholder="Nombre del Producto" />
-                            <input type="number" className="form-control mb-3 mt-3" placeholder="Cantidad" required />
-                            <input type="text" className="form-control mb-3 mt-3" placeholder="ID Proveedor" required />
-                            <button className="btn btn-primary w-100">Guardar</button>
+                        <form onSubmit={handleSubmit}>
+                            <input onChange={handleChange} name="nombre_producto" type="text" className="form-control mb-3" placeholder="Nombre del Producto" />
+                            <input onChange={handleChange} name="cantidad" type="number" className="form-control mb-3 mt-3" placeholder="Cantidad" required />
+                            <input onChange={handleChange} name="ID_provedor" type="text" className="form-control mb-3 mt-3" placeholder="ID Proveedor" required />
+                            <button 
+                                className="btn btn-primary w-100" 
+                                name="registrar" 
+                                onClick={(event) => {
+                                    handleC(event); 
+                                    setTimeout(() => handleSubmit(event), 0);
+                                }}
+                            >
+                                Guardar
+                            </button>
                         </form>
                     </div>
 

@@ -1,5 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+export const createConnection = createAsyncThunk(
+    "client/create",
+    async (formData, { rejectWithValue }) => {
+        try {
+            const response = await fetch("http://localhost/back/registerClient.php", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error en la solicitud");
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Acción asíncrona para eliminar un cliente
 export const deleteConnection = createAsyncThunk(
     "client/delete",
@@ -77,6 +98,23 @@ const clientSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(createConnection.pending, (state) => {
+                state.loading = true;
+                state.success = false;
+                state.error = null;
+                state.message = null;
+            })
+            .addCase(createConnection.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.message = action.payload.message;
+            })
+            .addCase(createConnection.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload || "Error al registrar el cliente.";
+            })
+
             .addCase(deleteConnection.pending, (state) => {
                 state.loading = true;
                 state.success = false;
