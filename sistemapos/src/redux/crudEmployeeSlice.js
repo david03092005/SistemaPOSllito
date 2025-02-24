@@ -1,5 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+
+// Acción asíncrona para crear un empleado
+export const createEmployee = createAsyncThunk(
+    "employee/create",
+    async (formData, { rejectWithValue }) => {
+        try {
+            const response = await fetch("http://localhost/back/registerEmployee.php", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error en la solicitud");
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Acción asíncrona para eliminar un empleado
 export const deleteConnection = createAsyncThunk(
     "employee/delete", // Tipo de acción para Redux
@@ -77,6 +100,24 @@ const employeeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(createEmployee.pending, (state) => {
+                state.loading = true;
+                state.success = false;
+                state.error = null;
+                state.message = null;
+            })
+            .addCase(createEmployee.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.message = action.payload.message;
+                state.employee = action.payload.employee;
+            })
+            .addCase(createEmployee.rejected, (state, action) => {
+                state.loading = false;
+                state.success = false;
+                state.error = action.payload || "Error al crear el empleado.";
+            })
+       
             // Manejo de eliminar empleado
             .addCase(deleteConnection.pending, (state) => {
                 state.loading = true;
