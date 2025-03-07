@@ -5,7 +5,8 @@ export const loginUser = createAsyncThunk(
     "auth/loginUser",
     async (formData, { rejectWithValue }) => {
         try {
-            const response = await fetch("http://192.168.232.86/back/login.php", {
+            // const response = await fetch("http://192.168.232.86/back/login.php", {
+            const response = await fetch("http://localhost/back/login.php", {
                 method: "POST",
                 body: formData,
             });

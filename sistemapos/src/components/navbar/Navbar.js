@@ -16,15 +16,18 @@ const Navbar = () => {
         navigate('/');
     }
     
+    const handleBack = () => {
+        navigate("/admin");
+    }
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand" href="/admin">SistemaPOSllito</a>
+                <div className="navbar-brand" onClick={handleBack} style={{ cursor: "pointer" }}>SistemaPOSllito</div>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            {/* <h5>{user.usuario.nombre_usuario}</h5> */}
+                            <h5>{user.usuario.nombre_usuario}</h5>
                         </li>
                     </ul>
                     <button onClick={handleLogout} type="button" className="btn btn-outline-primary btn-lg w-80">LogOut</button>
