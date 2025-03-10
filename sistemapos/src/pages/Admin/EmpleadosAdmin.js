@@ -24,8 +24,8 @@ function EmpleadosAdmin() {
     });
 
     const [searchId, setSearchId] = useState("");
-    const filteredEmployees = employees.filter(cliente => 
-        searchId === "" || cliente.ID_cliente.toString().startsWith(searchId)
+    const filteredEmployees = employees.filter(usuario => 
+        searchId === "" || usuario.ID_usuario.toString().startsWith(searchId)
     );
     const handleSearchChange = (event) => {
         setSearchId(event.target.value); // Actualiza el estado de búsqueda
