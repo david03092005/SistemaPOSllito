@@ -11,32 +11,44 @@ $accion = $_POST['accion'];
 
 $consulta = "SELECT * FROM usuario WHERE ID_usuario = $id";
 $consultaUser = mysqli_query($conexion, $consulta);
-if ($accion === "consultar"){
-    if ($consultaUser->num_rows == 1) {
-        $usuario = $consultaUser->fetch_assoc();
+if ($accion === "consultar") {
+    if (mysqli_num_rows($consultaUser) == 1) {
+        $usuario = mysqli_fetch_assoc($consultaUser);
+        
+        // Inicializamos variables
+        $nombre = "";
+        $cedula = "";
+
+        if ($usuario['rol'] == false) {  // Si es administrador
+            $consultaAdmin = "SELECT nombre_administrador, cedula_administrador FROM administrador WHERE ID_usuario = $id";
+            $resultadoAdmin = mysqli_query($conexion, $consultaAdmin);
+
+            if (mysqli_num_rows($resultadoAdmin) == 1) {
+                $admin = mysqli_fetch_assoc($resultadoAdmin);
+                $nombre = $admin['nombre_administrador'];
+                $cedula = $admin['cedula_administrador'];
+            }
+        } else {  // Si es vendedor
+            $consultaVend = "SELECT nombre_vendedor, cedula_vendedor FROM vendedor WHERE ID_usuario = $id";
+            $resultadoVend = mysqli_query($conexion, $consultaVend);
+
+            if (mysqli_num_rows($resultadoVend) == 1) {
+                $vend = mysqli_fetch_assoc($resultadoVend);
+                $nombre = $vend['nombre_vendedor'];
+                $cedula = $vend['cedula_vendedor'];
+            }
+        }
+
         $user = [
             "ID_usuario" => $usuario['ID_usuario'],
             "nombre_usuario" => $usuario['nombre_usuario'],
             "rol" => $usuario['rol'],
-            "contrasena" => $usuario['contrasena']
+            "contrasena" => $usuario['contrasena'],
+            "nombre" => $nombre,
+            "cedula" => $cedula
         ];
-        if ($user['rol'] == false){
-            $consulta = "SELECT * FROM administrador WHERE ID_usuario = $id";
-            $consultaAdmin = mysqli_query($conexion, $consulta);
-            $admin = $consultaAdmin->fetch_assoc();
-            $user["nombre"] = $admin['nombre_administrador'];
-            $user["cedula"] = $admin['cedula_administrador'];
-        }
-        else{
-            $consulta = "SELECT * FROM vendedor WHERE ID_usuario = $id";
-            $consultaVend = mysqli_query($conexion, $consulta);
-            $vend = $consultaVend->fetch_assoc();
-            $user["nombre"] = $vend['nombre_vendedor'];
-            $user["cedula"] = $vend['cedula_vendedor'];
-        }
         echo json_encode(["success" => true, "message" => "Usuario encontrado", "user" => $user]);
-    }
-    else{
+    } else {
         echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
     }
 }

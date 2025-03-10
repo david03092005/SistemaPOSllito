@@ -18,6 +18,20 @@ function ClientesAdmin() {
         nombre_cliente: ""
     });
 
+    const [selectedClienteId, setSelectedClienteId] = useState("");
+    
+    const handleOpenEdit = (cliente) => {
+        setSelectedClienteId(cliente.cedula_cliente);
+        formData.cedula_cliente = cliente.cedula_cliente;
+        formData.nombre_cliente = cliente.nombre_cliente;
+    };
+
+    const handleCloseEdit = () => {
+        setSelectedClienteId("");
+        formData.cedula_cliente = "";
+        formData.nombre_cliente = "";
+    };
+
     const [searchCedula, setSearchCedula] = useState("");
     const filteredClients = clients.filter(cliente => 
         searchCedula === "" || cliente.cedula_cliente.toString().startsWith(searchCedula)
@@ -31,7 +45,6 @@ function ClientesAdmin() {
     };
 
     const handleSubmit = async (event) => {
-        console.log(event.target.name);
         event.preventDefault();
         const data = new FormData();
         if (event.target.name === "eliminar") {
@@ -43,12 +56,7 @@ function ClientesAdmin() {
             data.append("cedula_cliente", formData.cedula_cliente);
             data.append("nombre_cliente", formData.nombre_cliente);
             dispatch(updateConnection(data));
-        } 
-        else if (event.target.name === "consultar") {
-            data.append("cedula_cliente", formData.cedula_cliente);
-            data.append("accion", "consultar");
-            dispatch(updateConnection(data));
-        } 
+        }
         else if (event.target.name === "buscar") {
             console.log("ho");
             dispatch(readConnection(data));
@@ -84,11 +92,9 @@ function ClientesAdmin() {
                         </button>
                     </li>
                     <li className="nav-item">
-                        {/* <form onSubmit={handleSubmit}> */}
                         <button onClick={handleSubmit} name="buscar" className="nav-link" data-bs-toggle="tab" data-bs-target="#buscar" type="button" role="tab">
                             Buscar Clientes
                         </button>
-                        {/* </form> */}
                     </li>
                     <li className="nav-item">
                         <button  name="actualizar" className="nav-link" data-bs-toggle="tab" data-bs-target="#actualizar" type="button" role="tab">
@@ -108,16 +114,12 @@ function ClientesAdmin() {
                         <form onSubmit={handleSubmit} name="registrar">
                             <input onChange={handleChange} name="nombre_cliente" type="text" className="form-control mb-3" placeholder="Nombre del Cliente" />
                             <input onChange={handleChange} name="cedula_cliente" type="number" className="form-control mb-3 mt-3" placeholder="Cédula del Cliente" required />
-                            <button 
-                                className="btn btn-primary w-100" 
-                                name="registrar" 
-                                onClick={(event) => {
-                                    setTimeout(() => handleSubmit(event), 0);
-                                }}
-                            >
+                            <button className="btn btn-primary w-100" name="registrar">
                                 Guardar
                             </button>
                         </form>
+                        {message && <p>{message}</p>}
+                        {error && <p style={{ color: "red" }}>{error}</p>}
                     </div>
 
                     <div className="tab-pane fade" id="buscar" role="tabpanel">
@@ -149,41 +151,89 @@ function ClientesAdmin() {
                                         <td colSpan="2" className="text-center">No se encontraron clientes</td>
                                     </tr>
                                 )}
-                                {/* {clients.message ? null :
-                                    clients.map(cliente => (
-                                    <tr key={cliente.cedula_cliente}>
-                                        <th scope="row">{cliente.cedula_cliente}</th>
-                                        <td>{cliente.nombre_cliente}</td>
-                                    </tr>
-                                ))} */}
                             </tbody>
                         </table>
                     </div>
 
                     <div className="tab-pane fade" id="actualizar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Actualizar Información del Cliente</h3>
+                            <select
+                            name = "actualizar"
+                            className="form-select"
+                            aria-label="Seleccionar cliente"
+                            value={selectedClienteId}
+                            onSelect={handleSubmit}
+                            onChange={(e) => {
+                                const selectedId = e.target.value;
+                                const cliente = clients.find(p => p.cedula_cliente.toString() === selectedId);
+                                if (cliente) {
+                                    handleOpenEdit(cliente);
+                                } 
+                                else {
+                                    handleCloseEdit();
+                                }  
+                            }}
+                            >
+                                <option value="">Seleccione un proveedor</option>
+                                {clients.map(cliente => (
+                                    <option key={cliente.cedula_cliente} value={cliente.cedula_cliente}>
+                                        {cliente.nombre_cliente} (ID: {cliente.cedula_cliente})
+                                    </option>
+                                    
+                                ))}
+                            </select>
                         <form onSubmit={handleSubmit} name="actualizar">
-                            <p>Cedula cliente</p>
-                            <input onChange={handleChange} name="cedula_cliente" type="text" className="form-control mb-3 mt-3" placeholder="Ingrese la Cédula" />
-                            {cliente ? (
-                                <>
-                                    <p>Nombre del Cliente</p>
-                                    <input onChange={handleChange} name="nombre_cliente" type="text" className="form-control mb-3 mt-3" value={formData.nombre_cliente || ""} />
-                                    <button name="actualizar" className="btn btn-primary">Guardar</button>
-                                </>
-                            ) : null}
+                            <h3>Modificar Cliente</h3>
+                            <div className="mb-3">
+                                <label className="form-label">Nombre:</label>
+                                <input
+                                    name="nombre_cliente"
+                                    type="text"
+                                    className="form-control"
+                                    value={formData.nombre_cliente}
+                                    onChange={handleChange}
+
+                                />
+                            </div>
+                            <button name="actualizar" className="btn btn-primary" disabled={!selectedClienteId}>
+                                Guardar cambios
+                            </button>
+                            <button className="btn btn-secondary me-2" type="button" onClick={handleCloseEdit} disabled={!selectedClienteId} > 
+                                    Cancelar
+                            </button>
                             {message && <p>{message}</p>}
                             {error && <p style={{ color: "red" }}>{error}</p>}
-                        </form>
-                        <form onSubmit={handleSubmit} name="consultar">
-                            <button name="consultar" className="btn btn-primary">Buscar</button>
                         </form>
                     </div>
 
                     <div className="tab-pane fade" id="eliminar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Eliminar Cliente</h3>
+                            <select
+                            name = "actualizar"
+                            className="form-select"
+                            aria-label="Seleccionar cliente"
+                            value={selectedClienteId}
+                            onSelect={handleSubmit}
+                            onChange={(e) => {
+                                const selectedId = e.target.value;
+                                const cliente = clients.find(p => p.cedula_cliente.toString() === selectedId);
+                                if (cliente) {
+                                    handleOpenEdit(cliente);
+                                } 
+                                else {
+                                    handleCloseEdit();
+                                }  
+                            }}
+                            >
+                                <option value="">Seleccione un proveedor</option>
+                                {clients.map(cliente => (
+                                    <option key={cliente.cedula_cliente} value={cliente.cedula_cliente}>
+                                        {cliente.nombre_cliente} (ID: {cliente.cedula_cliente})
+                                    </option>
+                                    
+                                ))}
+                            </select>
                         <form onSubmit={handleSubmit} name="eliminar">
-                            <input onChange={handleChange} name="cedula_cliente" type="text" className="form-control mb-3 mt-3" placeholder="Ingrese la Cédula" />
                             <button name="eliminar" className="btn btn-danger">Eliminar</button>
                         </form>
                         {message && <p>{message}</p>}

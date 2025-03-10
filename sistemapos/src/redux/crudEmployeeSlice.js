@@ -57,7 +57,6 @@ export const updateConnection = createAsyncThunk(
             if (!response.ok) {
                 throw new Error("Error en la solicitud");
             }
-
             const data = await response.json(); // Convertir la respuesta a JSON
             return data; // Retornar la respuesta del servidor
         } catch (error) {
@@ -78,7 +77,7 @@ export const readConnection = createAsyncThunk(
             if (!response.ok) {
                 throw new Error("Error en la solicitud");
             }
-
+            // console.log(response.data)
             const data = await response.json(); // Convertir la respuesta a JSON
             return data; // Retornar la respuesta del servidor
         } catch (error) {
@@ -94,7 +93,7 @@ const employeeSlice = createSlice({
         success: false,
         error: null,
         message: "",
-        usuario: null,
+        usuario: "",
         employees: []
     },
     reducers: {},

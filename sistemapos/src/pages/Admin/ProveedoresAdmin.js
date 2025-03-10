@@ -26,7 +26,7 @@ function ProveedoresAdmin() {
     //Crear
     const [newProveedorNombre, setNewProveedorNombre] = useState("");
     //Actualizar
-    const [selectedProveedor, setSelectedProveedor] = useState(null);
+    const [selectedProveedor, setSelectedProveedor] = useState("");
     const [nombreProveedor, setNombreProveedor] = useState("");
     const [selectedProveedorId, setSelectedProveedorId] = useState(""); // Estado para almacenar el ID del proveedor seleccionado
     
@@ -39,8 +39,8 @@ function ProveedoresAdmin() {
         // Seleccionar automáticamente el proveedor si hay un solo resultado
 
     //Eliminar
-    const [proveedorToDelete, setProveedorToDelete] = useState(null);
-    const [selectedProveedorIdDelete, setProveedorIDToDelete] = useState(null);
+    const [proveedorToDelete, setProveedorToDelete] = useState("");
+    const [selectedProveedorIdDelete, setProveedorIDToDelete] = useState("");
 
 
     const handleOpenEdit = (proveedor) => {
@@ -50,8 +50,8 @@ function ProveedoresAdmin() {
     };
 
     const handleCloseEdit = () => {
-        setSelectedProveedorId(null);
-        setSelectedProveedor(null);
+        setSelectedProveedorId("");
+        setSelectedProveedor("");
         setNombreProveedor(""); // Cargar el nombre del proveedor
     };   
 
@@ -62,8 +62,8 @@ function ProveedoresAdmin() {
     };
  
     const handleCloseDelete = (proveedor) => {
-        setProveedorToDelete(null);
-        setProveedorIDToDelete(null)
+        setProveedorToDelete("");
+        setProveedorIDToDelete("")
     };
 
     const handleUpdateProveedor = () => {
@@ -174,10 +174,9 @@ function ProveedoresAdmin() {
 
     return (
         
-        <div>
+        <>
             <Navbar />
             <div className="container mt-5">
-
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
                         <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#registrar" type="button" role="tab">
@@ -267,8 +266,6 @@ function ProveedoresAdmin() {
                     </div>
                     <div className="tab-pane fade" id="actualizar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Actualizar información de Proveedor</h3>
-                        <form>
-
                         <select
                             className="form-select"
                             aria-label="Seleccionar proveedor"
@@ -314,7 +311,6 @@ function ProveedoresAdmin() {
                             </button>
                     </form>
                     </div>
-                        </form>
                     </div>
                     <div className="tab-pane fade" id="eliminar" role="tabpanel">
                         <h3 className="mb-3 mt-3">Eliminar Proveedor</h3>
@@ -349,7 +345,7 @@ function ProveedoresAdmin() {
                     </div>
                 </div>
             </div>
-        </div>  
+        </>  
     );
 }
 
