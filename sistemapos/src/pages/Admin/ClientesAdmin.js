@@ -58,7 +58,6 @@ function ClientesAdmin() {
             dispatch(updateConnection(data));
         }
         else if (event.target.name === "buscar") {
-            console.log("ho");
             dispatch(readConnection(data));
         }
         else if (event.target.name === "registrar") {

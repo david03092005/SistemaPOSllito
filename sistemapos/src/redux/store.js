@@ -4,6 +4,7 @@ import authReducer from "../redux/authSlice";
 import employeeReducer from "../redux/crudEmployeeSlice"
 import clientReducer from "../redux/crudClientSlice"
 import productReducer from "../redux/crudProductSlice"
+import clientConsult from "../redux/clientSlice"
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     auth: authReducer,
     employee: employeeReducer,
     client: clientReducer,
-    product: productReducer
+    product: productReducer,
+    clientC: clientConsult
   },
 });
 

@@ -1,42 +1,60 @@
 <?php
-include ("conection.php");
+include("conection.php");
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Credentials: true");
 
-$usuario = $_POST['usuario'];
-$contrasena = $_POST['contrasena'];
+session_id('PHPSESSID');
+
+session_start();
+
+$usuario = $_POST['usuario'] ?? null;
+$contrasena = $_POST['contrasena'] ?? null;
+// $usuario = "admin0";
+// $contrasena = "admin0";
 
 if (!$usuario || !$contrasena) {
     echo json_encode(["success" => false, "message" => "Faltan datos"]);
     exit();
 }
 
-$verificacion = "SELECT * FROM usuario WHERE nombre_usuario = '$usuario'";
-$resultado = mysqli_query($conexion, $verificacion);
+$verificacion = "SELECT * FROM usuario WHERE nombre_usuario = ?";
+$stmt = $conexion->prepare($verificacion);
+$stmt->bind_param("s", $usuario);
+$stmt->execute();
+$resultado = $stmt->get_result();
 
 if ($resultado->num_rows > 0) {
     $fila = $resultado->fetch_assoc();
-    if ($contrasena == $fila['contrasena']) { // Verifica la contraseña
-         // Si el rol es administrador, obtener la cédula del administrador
-         if ($fila['rol'] == "0") {
-            $consultaCedula = "SELECT cedula_administrador FROM administrador WHERE ID_usuario = " . $fila['ID_usuario'];
-            $resultadoCedula = mysqli_query($conexion, $consultaCedula);
-            if ($resultadoCedula->num_rows > 0) {
-                $cedulaAdmin = $resultadoCedula->fetch_assoc();
-                $cedula = $cedulaAdmin['cedula_administrador'];
-            }
-        }
 
-        echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso", "usuario" => $fila, "cedula" => $cedula]);
+    if ($contrasena == $fila['contrasena']) { // Verifica la contraseña
+        // Generar código 2FA
+        $codigo_2fa = rand(100000, 999999);
+        $_SESSION['codigo_2fa'] = $codigo_2fa;
+        $_SESSION['usuario_2fa'] = $usuario;
+
+        // Correo de destino
+        $correo = "davidasz20053@gmail.com"; // Puedes obtenerlo de la BD si lo tienes almacenado
+
+        // Enviar código por correo
+        $asunto = "Código de autenticación";
+        $mensaje = "Tu código de autenticación es: $codigo_2fa";
+        $headers = "From: no-reply@tuweb.com\r\n";
+        $headers .= "Reply-To: no-reply@tuweb.com\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion();
+        mail($correo, $asunto, $mensaje, $headers);
+
+        echo json_encode(["success" => true, "fase" => "2fa", "message" => "Código 2FA enviado"]);
     } else {
-        echo json_encode(["success" => false, "message" => "Contraseña incorrecta", "usuario" => ""]);
+        echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Usuario no encontrado", "usuario" => ""]);
+    echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
 }
 
+session_write_close();
 mysqli_close($conexion);
 ?>
