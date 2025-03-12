@@ -5,7 +5,7 @@ import { clearClient } from "../../redux/clientSlice";
 import { useDispatch } from "react-redux";
 
 function Venta() {
-    const [setScanResults] = useState([]);
+    const [scanResults, setScanResults] = useState([]);
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
     const scannerRef = useRef(null);

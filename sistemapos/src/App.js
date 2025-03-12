@@ -11,6 +11,8 @@ import ProveedoresAdmin from "./pages/Admin/ProveedoresAdmin"
 import EmpleadosAdmin from "./pages/Admin/EmpleadosAdmin"
 import ProductosAdmin from "./pages/Admin/ProductosAdmin"
 import Venta from "./pages/Vendedor/Venta2"
+import ReporteVentasAdmin from "./pages/Admin/ReporteVentasAdmin"; 
+import ReporteVentasDiaAdmin from "./pages/Admin/ReporteVentasDiaAdmin";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route exact path = "/AdministrarClientes" element={<ClientesAdmin />} />
         <Route exact path = "/ProductosAdmin" element={<ProductosAdmin />} />
         <Route exact path = "/Venta" element={<Venta/>} />
+        <Route exact path="/ReporteVentasDiaAdmin" element={<ReporteVentasDiaAdmin />} /> 
+        <Route exact path="/ReporteVentasAdmin" element={<ReporteVentasAdmin />} />
       </Routes>
     </div>
   );
