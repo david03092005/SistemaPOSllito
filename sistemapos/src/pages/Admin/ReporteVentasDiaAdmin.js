@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSalesReport } from "../../redux/salesReportSlice";
 import { jsPDF } from "jspdf";
+import Navbar from "../../components/navbar/Navbar";
 
 const ReporteVentasDiaAdmin = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const ReporteVentasDiaAdmin = () => {
   };
 
   return (
+    <>
+      <Navbar />
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Reporte de Ventas del Día</h2>
 
@@ -40,32 +43,32 @@ const ReporteVentasDiaAdmin = () => {
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="border p-4 rounded shadow bg-gray-100">
-              <h3 className="text-lg font-bold">📅 Fecha del Reporte</h3>
+              <h3 className="text-lg font-bold">Fecha del Reporte</h3>
               <p className="text-xl font-semibold">{report.fecha}</p>
             </div>
 
             <div className="border p-4 rounded shadow">
-              <h3 className="text-lg font-bold">🔹 Total de Ventas</h3>
+              <h3 className="text-lg font-bold">Total de Ventas</h3>
               <p className="text-xl font-semibold">${report.total_ventas}</p>
             </div>
 
             <div className="border p-4 rounded shadow">
-              <h3 className="text-lg font-bold">🔹 Cantidad de Facturas</h3>
+              <h3 className="text-lg font-bold">Cantidad de Facturas</h3>
               <p className="text-xl font-semibold">{report.cantidad_facturas}</p>
             </div>
 
             <div className="border p-4 rounded shadow">
-              <h3 className="text-lg font-bold">🔹 Promedio por Factura</h3>
+              <h3 className="text-lg font-bold">Promedio por Factura</h3>
               <p className="text-xl font-semibold">${report.promedio_venta}</p>
             </div>
 
             <div className="border p-4 rounded shadow">
-              <h3 className="text-lg font-bold">🔹 Método de Pago Más Usado</h3>
+              <h3 className="text-lg font-bold">Método de Pago Más Usado</h3>
               <p className="text-xl font-semibold">{report.metodo_pago_mas_usado}</p>
             </div>
 
             <div className="border p-4 rounded shadow">
-              <h3 className="text-lg font-bold">🔹 Producto Más Vendido</h3>
+              <h3 className="text-lg font-bold">Producto Más Vendido</h3>
               <p className="text-xl font-semibold">{report.producto_mas_vendido}</p>
             </div>
           </div>
@@ -79,6 +82,7 @@ const ReporteVentasDiaAdmin = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

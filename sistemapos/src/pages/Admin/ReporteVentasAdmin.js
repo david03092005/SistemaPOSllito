@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFacturas } from "../../redux/salesSlice";
+import Navbar from "../../components/navbar/Navbar";
+import { jsPDF } from "jspdf";
 
 const ReporteVentasAdmin = () => {
     const dispatch = useDispatch();
@@ -19,9 +21,47 @@ const ReporteVentasAdmin = () => {
         setBusquedaRealizada(true);
     };
 
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+
+        // Título
+        doc.setFontSize(16);
+        doc.text(`Detalles de la Factura #${facturaSeleccionada.ID_factura}`, 20, 20);
+
+        // Información del cliente y vendedor
+        doc.setFontSize(12);
+        let y = 30;
+        doc.text(`Cliente: ${facturaSeleccionada.nombre_cliente} (Cédula: ${facturaSeleccionada.cedula_cliente})`, 20, y);
+        y += 10;
+        doc.text(`Vendedor: ${facturaSeleccionada.nombre_vendedor}`, 20, y);
+        y += 10;
+        doc.text(`Fecha: ${facturaSeleccionada.fecha}`, 20, y);
+        y += 10;
+        doc.text(`Total: $${facturaSeleccionada.total}`, 20, y);
+        y += 10;
+        doc.text(`Método de Pago: ${facturaSeleccionada.metodo_pago}`, 20, y);
+        y += 15;
+
+        // Espaciado antes de los productos
+        doc.text("Productos:", 20, y);
+        y += 10;
+
+        // Listado de productos en formato lineal
+        facturaSeleccionada.productos.forEach((p, index) => {
+            doc.text(`${index + 1}. ${p.nombre_producto} - Cantidad: ${p.cantidad}, Precio Unitario: $${p.precio_unitario}, Subtotal: $${(p.cantidad * p.precio_unitario)}`, 20, y);
+            y += 10;
+        });
+
+        // Guardar el PDF
+        doc.save(`Factura_${facturaSeleccionada.ID_factura}.pdf`);
+    };
+
+
     return (
+        <>
+        <Navbar />
         <div className="container mt-4">
-            <h2>Reporte de Ventas</h2>
+            <h2>Registro de Ventas</h2>
             <div className="mb-3">
                 <label className="form-label">Filtrar por Fecha:</label>
                 <input
@@ -129,10 +169,12 @@ const ReporteVentasAdmin = () => {
                         </table>
 
                         <button className="btn btn-secondary" onClick={() => setFacturaSeleccionada(null)}>Cerrar</button>
+                        <button className="btn btn-primary" onClick={handleDownloadPDF}>Imprimir</button>
                     </div>
                 </div>
             )}
         </div>
+        </>
     );
 };
 

@@ -46,6 +46,14 @@ if (isset($_SESSION['codigo_2fa']) && $codigo_2fa == $_SESSION['codigo_2fa']) {
                 $cedula = $cedulaAdmin['cedula_administrador'];
             }
         }
+        else{
+            $consultaCedula = "SELECT cedula_vendedor FROM vendedor WHERE ID_usuario = " . $fila['ID_usuario'];
+            $resultadoCedula = mysqli_query($conexion, $consultaCedula);
+            if ($resultadoCedula->num_rows > 0) {
+                $cedulaVendedor = $resultadoCedula->fetch_assoc();
+                $cedula = $cedulaVendedor['cedula_vendedor'];
+            }
+        }
         echo json_encode(["success" => true, "message" => "Inicio de sesión exitoso", "usuario" => $fila, "cedula" => $cedula]);
     } else {
         echo json_encode(["success" => false, "message" => "Error al obtener datos del usuario"]);

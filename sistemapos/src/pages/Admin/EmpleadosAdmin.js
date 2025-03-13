@@ -11,7 +11,7 @@ function EmpleadosAdmin() {
 
     const cedulaAdmin = useSelector((state) => state.auth.cedulaAdmin);
     const { user } = useSelector((state) => state.auth);
-    const { message, error, usuario, employees } = useSelector((state) => state.employee);
+    const { message, error, usuario, employees, nombre_usuario, contrasena } = useSelector((state) => state.employee);
 
     const [formData, setFormData] = useState({
         accion: "",
@@ -198,6 +198,14 @@ function EmpleadosAdmin() {
                             <button className="btn btn-primary w-100" name="registrar">
                                 Guardar
                             </button>
+                            { message ?
+                            <pre className="bg-light p-3 rounded border">
+                                {message}
+                                {"\nNombre de usuario: "}{nombre_usuario}
+                                {"\nContraseña: "}{contrasena}
+                            </pre>
+                            : null}
+                            {error && <p className="text-danger">{error}</p>}
                         </form>
 
                     </div>
@@ -207,7 +215,7 @@ function EmpleadosAdmin() {
                             type="number"
                             className="form-control"
                             id="search-proveedor"
-                            placeholder="Ingrese la cedula del cliente"
+                            placeholder="Ingrese el ID del empleado"
                             onChange={handleSearchChange}
                         />
                         <div className="mb-3">
@@ -215,7 +223,7 @@ function EmpleadosAdmin() {
                             <thead>
                                 <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">Nombre de usuario</th>
                                 <th scope="col">Contraseña</th>
                                 <th scope="col">Rol</th>
                                 <th scope="col">Nombre</th>

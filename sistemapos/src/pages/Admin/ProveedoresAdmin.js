@@ -8,7 +8,6 @@ function ProveedoresAdmin() {
     const navigate = useNavigate();
 
     const { user } = useSelector((state) => state.auth);
-
     useEffect(() => {
         if (!user) {
             navigate("/");

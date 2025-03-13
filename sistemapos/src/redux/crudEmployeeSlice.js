@@ -94,7 +94,9 @@ const employeeSlice = createSlice({
         error: null,
         message: "",
         usuario: "",
-        employees: []
+        employees: [],
+        nombre_usuario: "",
+        contrasena: ""
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -109,6 +111,8 @@ const employeeSlice = createSlice({
                 state.loading = false;
                 state.success = true;
                 state.message = action.payload.message;
+                state.nombre_usuario = action.payload.usuario;
+                state.contrasena = action.payload.contrasena;
             })
             .addCase(createEmployee.rejected, (state, action) => {
                 state.loading = false;

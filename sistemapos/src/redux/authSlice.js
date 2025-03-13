@@ -117,11 +117,7 @@ const authSlice = createSlice({
                     state.user = action.payload;
                     state.fase = "login";
                     state.mensaje = "Inicio de sesión exitoso.";
-
-                    // Guardar cédula si es administrador
-                    if (action.payload.usuario.rol === "0") {
-                        state.cedulaAdmin = action.payload.cedula;
-                    }
+                    state.cedulaAdmin = action.payload.cedula;
 
                     // Limpiar localStorage
                     localStorage.removeItem("usuario_2fa");

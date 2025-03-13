@@ -25,7 +25,7 @@ function Admin() {
                             <button onClick={() => navigate("/EmpleadosAdmin")} type="button" className="btn btn-outline-primary btn-lg w-80">Empleados</button>
                         </div>
                         <div className="col">
-                            <button onClick={() => navigate("/AdministrarCliente")} type="button" className="btn btn-outline-secondary btn-lg w-80">Clientes</button>
+                            <button onClick={() => navigate("/AdministrarClientes")} type="button" className="btn btn-outline-secondary btn-lg w-80">Clientes</button>
                         </div>
                         <div className="col">
                             <button onClick={() => navigate("/ProveedoresAdmin")} type="button" className="btn btn-outline-success btn-lg w-80">Proveedores</button>
@@ -35,7 +35,7 @@ function Admin() {
                         </div>
                         <div className="col">
                             <button onClick={() => navigate("/ReporteVentasAdmin")} type="button" className="btn btn-outline-warning btn-lg w-80">
-                                Reporte de Ventas
+                                Registro de Ventas
                             </button>
                         </div>
                         <div className="col">

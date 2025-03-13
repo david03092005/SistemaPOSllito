@@ -35,7 +35,7 @@ function ProductosAdmin() {
     };
     
 
-    const [searchId, setSearchId] = useState("");
+    const [searchId] = useState("");
     const filteredProducto = products.filter(producto => 
         searchId === "" || producto.Id_producto.toString().startsWith(searchId)
     );

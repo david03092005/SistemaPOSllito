@@ -55,6 +55,14 @@ switch ($action) {
         }
         break;
         
+    case 'devolverProducto':
+        $codigo = $data['codigo'];
+            
+        $updateQuery = "UPDATE producto SET cantidad = cantidad + 1 WHERE ID_producto = '$codigo'";
+        mysqli_query($conexion, $updateQuery);
+                
+        echo json_encode(["success" => true, "message" => "Producto devuelto"]);
+        break;
 
     case 'cancelarCompra':
         $products = $data['cantProducts'];

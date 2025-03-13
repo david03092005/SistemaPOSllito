@@ -1,0 +1,158 @@
+.ventasContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+}
+
+.cuadroUno {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+}
+.cuadroFila1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+}
+
+.cuadroFila2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+}
+
+
+/* Lista de productos */
+.lista-productos {
+    grid-row: span 2.5;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lista-productos ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-productos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: #fff;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Información del último producto escaneado */
+.info-producto {
+    padding: 15px;
+    background: #eef;
+    border-radius: 10px;
+}
+
+/* Escáner */
+.scanner {
+    padding: 1px;
+    background: #f4a02360;
+    border-radius: 10px;
+    height: 100;
+}
+
+/* Entrada manual */
+.manual-input {
+    padding: 15px;
+    background: #f4f4f4;
+    border-radius: 10px;
+}
+
+.manual-input input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+/* Botones */
+button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Botones*/
+.extra-section {
+    grid-column: span 2;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4a02360;
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    height: 500px; 
+}
+
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.key {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    width: 80px; /* Ancho de las teclas */
+    height: 80px; /* Alto de las teclas */
+}
+
+.key:hover {
+    background-color: #d89b9b;
+}
+
+.display {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.update-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.update-button:hover {
+    background-color: #0056b3;
+}
